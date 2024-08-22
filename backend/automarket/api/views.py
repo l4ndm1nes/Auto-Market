@@ -35,8 +35,10 @@ class EmailVerificationView(APIView):
             return Response({'detail': 'Email verified successfully.'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
 
 class ProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -51,6 +53,7 @@ class ProfileView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProfileDeleteView(APIView):
     permission_classes = [permissions.IsAuthenticated]

@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import RegistrationView, EmailVerificationView, CustomTokenObtainPairView, ProfileView, ProfileDeleteView
 from rest_framework_simplejwt.views import TokenRefreshView
+
+from .views import RegistrationView, EmailVerificationView, CustomTokenObtainPairView, ProfileView, ProfileDeleteView
+
+app_name = "api"
 
 urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register'),

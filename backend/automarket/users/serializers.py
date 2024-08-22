@@ -63,6 +63,7 @@ class EmailVerificationSerializer(serializers.Serializer):
         user.save()
         verification.delete()
 
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -70,6 +71,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError('Your account is not verified.')
 
         return data
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -84,6 +86,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
         instance.save()
         return instance
+
 
 class ProfileDeleteSerializer(serializers.Serializer):
     confirm = serializers.BooleanField()

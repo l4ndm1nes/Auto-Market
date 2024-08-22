@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import EmailVerification
 
+
 @shared_task
 def send_verification_email_task(user_id, code, email):
     try:

@@ -6,8 +6,10 @@ from users.models import User, EmailVerification
 from celery import current_app
 from django.test import override_settings
 
+
 current_app.conf.task_always_eager = True
 current_app.conf.task_eager_propagates = True
+
 
 class UserTests(APITestCase):
 
