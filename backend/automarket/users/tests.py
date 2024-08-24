@@ -6,10 +6,8 @@ from users.models import User, EmailVerification
 from celery import current_app
 from django.test import override_settings
 
-
 current_app.conf.task_always_eager = True
 current_app.conf.task_eager_propagates = True
-
 
 class UserTests(APITestCase):
 
@@ -27,12 +25,12 @@ class UserTests(APITestCase):
             'last_name': 'User',
             'phone_number': '+1234567890'
         }
-        self.login_url = reverse('api:login')
-        self.profile_url = reverse('api:profile')
+        self.login_url = reverse('users:login')
+        self.profile_url = reverse('users:profile')
 
         mail.outbox = []
 
-        self.client.post(reverse('api:register'), self.user_data, format='json')
+        self.client.post(reverse('users:register'), self.user_data, format='json')
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn(self.user_data['email'], mail.outbox[0].to)
@@ -40,7 +38,7 @@ class UserTests(APITestCase):
 
         user = User.objects.get(username=self.user_data['username'])
         verification = EmailVerification.objects.get(user=user)
-        verification_url = reverse('api:email_verification', kwargs={'code': verification.code})
+        verification_url = reverse('users:email_verification', kwargs={'code': verification.code})
         self.client.post(verification_url)
 
         user.refresh_from_db()
@@ -80,7 +78,7 @@ class UserTests(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
 
-        response = self.client.delete(reverse('api:profile_delete'), data={'confirm': True}, format='json')
+        response = self.client.delete(reverse('users:profile_delete'), data={'confirm': True}, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         with self.assertRaises(User.DoesNotExist):

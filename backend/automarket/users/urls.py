@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import RegistrationView, EmailVerificationView, CustomTokenObtainPairView, ProfileView, ProfileDeleteView
 
-app_name = "api"
+app_name = "users"
 
 urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register'),
