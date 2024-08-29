@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
     'core',
     'users',
+    'carlisting',
 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -89,7 +90,10 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation'
+            '.UserAttributeSimilarityValidator'
+        ),
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
@@ -125,36 +129,48 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-#Rest Framework
+# Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('ACCESS_TOKEN_LIFETIME', 60))),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.getenv('REFRESH_TOKEN_LIFETIME', 1))),
-    'ROTATE_REFRESH_TOKENS': os.getenv('ROTATE_REFRESH_TOKENS', 'True').lower() == 'true',
-    'BLACKLIST_AFTER_ROTATION': os.getenv('BLACKLIST_AFTER_ROTATION', 'True').lower() == 'true',
+    'ACCESS_TOKEN_LIFETIME': (
+        timedelta(minutes=int(os.getenv('ACCESS_TOKEN_LIFETIME', 60)))
+    ),
+    'REFRESH_TOKEN_LIFETIME': (
+        timedelta(days=int(os.getenv('REFRESH_TOKEN_LIFETIME', 1)))
+    ),
+    'ROTATE_REFRESH_TOKENS': (
+            os.getenv('ROTATE_REFRESH_TOKENS', 'True').lower() == 'true'
+    ),
+    'BLACKLIST_AFTER_ROTATION': (
+            os.getenv('BLACKLIST_AFTER_ROTATION', 'True').lower() == 'true'
+    ),
     'ALGORITHM': os.getenv('ALGORITHM', 'HS256'),
     'SIGNING_KEY': os.getenv('SECRET_KEY'),
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': (os.getenv('AUTH_HEADER_TYPES', 'Bearer'),),
     'USER_ID_FIELD': os.getenv('USER_ID_FIELD', 'id'),
     'USER_ID_CLAIM': os.getenv('USER_ID_CLAIM', 'user_id'),
-    'AUTH_TOKEN_CLASSES': (os.getenv('AUTH_TOKEN_CLASSES', 'rest_framework_simplejwt.tokens.AccessToken'),),
+    'AUTH_TOKEN_CLASSES': (
+        os.getenv('AUTH_TOKEN_CLASSES', 'rest_framework_simplejwt.tokens.AccessToken'),
+    ),
     'TOKEN_TYPE_CLAIM': os.getenv('TOKEN_TYPE_CLAIM', 'token_type'),
     'JTI_CLAIM': os.getenv('JTI_CLAIM', 'jti'),
 }
 
-#Sending emails
+# Sending emails
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
     EMAIL_HOST = os.getenv('EMAIL_HOST')
-    EMAIL_PORT = int(os.getenv('EMAIL_PORT', ))
+    EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
     EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
     EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
