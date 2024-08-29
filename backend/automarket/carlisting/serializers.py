@@ -39,7 +39,7 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = [
             'name',
-            'country',
+            'origin_country',
             'established_year',
             'logo_url',
             'description',

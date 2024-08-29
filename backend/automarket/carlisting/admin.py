@@ -13,7 +13,9 @@ class CarListingAdmin(admin.ModelAdmin):
         'brand',
         'location',
         'is_sold',
-        'paid'
+        'paid',
+        'created_at',
+        'updated_at'
     )
     search_fields = (
         'title',
@@ -29,9 +31,9 @@ class CarListingAdmin(admin.ModelAdmin):
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('name', 'country', 'established_year')
-    search_fields = ('name', 'country')
-    list_filter = ('country',)
+    list_display = ('name', 'origin_country', 'established_year')
+    search_fields = ('name', 'origin_country')
+    list_filter = ('origin_country',)
     ordering = ('name',)
 
 
@@ -59,6 +61,6 @@ class InsuranceInfoAdmin(admin.ModelAdmin):
 
 @admin.register(CarImage)
 class CarImageAdmin(admin.ModelAdmin):
-    list_display = ('car_listing', 'uploaded_at')
+    list_display = ('car_listing', 'created_at')
     search_fields = ('car_listing__title',)
-    ordering = ('car_listing', 'uploaded_at')
+    ordering = ('car_listing', 'created_at')

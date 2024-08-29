@@ -21,7 +21,7 @@ class UserTests(APITestCase):
     def setUp(self):
         self.brand = Brand.objects.create(
             name="Toyota",
-            country="Japan",
+            origin_country="Japan",
             established_year=1937,
             logo_url="https://example.com/toyota-logo.png",
             description=(

@@ -1,10 +1,11 @@
 from django.db import models
 from django.conf import settings
+from core.models import BaseModel
 
 
-class Brand(models.Model):
+class Brand(BaseModel):
     name = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
+    origin_country = models.CharField(max_length=255)
     established_year = models.IntegerField()
     logo_url = models.URLField()
     description = models.TextField()
@@ -15,7 +16,7 @@ class Brand(models.Model):
         return self.name
 
 
-class Location(models.Model):
+class Location(BaseModel):
     city = models.CharField(max_length=255)
     region = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
@@ -27,7 +28,7 @@ class Location(models.Model):
         return f'{self.city}, {self.region}, {self.country}'
 
 
-class CarListing(models.Model):
+class CarListing(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -41,8 +42,6 @@ class CarListing(models.Model):
     body_type = models.CharField(max_length=100)
     color = models.CharField(max_length=50)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     is_sold = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
@@ -51,7 +50,7 @@ class CarListing(models.Model):
         return f'{self.title} - {self.user.username}'
 
 
-class InsuranceInfo(models.Model):
+class InsuranceInfo(BaseModel):
     car_listing = models.OneToOneField(
         CarListing,
         on_delete=models.CASCADE,
@@ -67,14 +66,13 @@ class InsuranceInfo(models.Model):
         return f'Insurance Info for {self.car_listing.title}'
 
 
-class CarImage(models.Model):
+class CarImage(BaseModel):
     car_listing = models.ForeignKey(
         CarListing,
         on_delete=models.CASCADE,
         related_name='images'
     )
     image_url = models.URLField()
-    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Image for {self.car_listing.title} uploaded at {self.uploaded_at}'
+        return f'Image for {self.car_listing.title} uploaded at {self.created_at}'
