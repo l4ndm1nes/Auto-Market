@@ -1,0 +1,41 @@
+[
+    {
+        "model": "carlisting.brand",
+        "pk": 1,
+        "fields": {
+            "name": "Toyota",
+            "origin_country": "Japan",
+            "established_year": 1937,
+            "logo_url": "https://example.com/toyota-logo.png",
+            "description": "Toyota Motor Corporation is a Japanese multinational automotive manufacturer.",
+            "website": "https://www.toyota.com",
+            "headquarters": "Toyota City, Aichi Prefecture, Japan"
+        }
+    },
+    {
+        "model": "carlisting.brand",
+        "pk": 2,
+        "fields": {
+            "name": "BMW",
+            "origin_country": "Germany",
+            "established_year": 1916,
+            "logo_url": "https://example.com/bmw-logo.png",
+            "description": "Bayerische Motoren Werke AG (BMW) is a German multinational company which produces luxury vehicles and motorcycles.",
+            "website": "https://www.bmw.com",
+            "headquarters": "Munich, Bavaria, Germany"
+        }
+    },
+    {
+        "model": "carlisting.brand",
+        "pk": 3,
+        "fields": {
+            "name": "Ford",
+            "origin_country": "United States",
+            "established_year": 1903,
+            "logo_url": "https://example.com/ford-logo.png",
+            "description": "Ford Motor Company is an American multinational automaker.",
+            "website": "https://www.ford.com",
+            "headquarters": "Dearborn, Michigan, United States"
+        }
+    }
+]

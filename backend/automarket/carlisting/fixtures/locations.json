@@ -1,0 +1,38 @@
+[
+    {
+        "model": "carlisting.location",
+        "pk": 1,
+        "fields": {
+            "city": "Kyiv",
+            "region": "Kyiv Oblast",
+            "country": "Ukraine",
+            "postal_code": "01001",
+            "time_zone": "Europe/Kiev",
+            "description": "The capital city of Ukraine."
+        }
+    },
+    {
+        "model": "carlisting.location",
+        "pk": 2,
+        "fields": {
+            "city": "Berlin",
+            "region": "Berlin",
+            "country": "Germany",
+            "postal_code": "10115",
+            "time_zone": "Europe/Berlin",
+            "description": "The capital and largest city of Germany."
+        }
+    },
+    {
+        "model": "carlisting.location",
+        "pk": 3,
+        "fields": {
+            "city": "New York",
+            "region": "New York",
+            "country": "United States",
+            "postal_code": "10001",
+            "time_zone": "America/New_York",
+            "description": "The largest city in the United States."
+        }
+    }
+]

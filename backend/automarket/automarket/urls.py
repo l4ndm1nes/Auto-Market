@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from carlisting.views import CarListingListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', CarListingListView.as_view(), name='main'),
     path('users/', include(('users.urls', 'users'), namespace='users')),
+    path(
+        'carlisting/',
+        include(('carlisting.urls', 'carlisting'), namespace='carlisting')
+    ),
 ]
+

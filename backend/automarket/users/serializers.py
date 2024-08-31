@@ -1,7 +1,15 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import User, EmailVerification
+from .models import User, EmailVerification, Favorite
 from .tasks import send_verification_email_task
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    car_listing_title = serializers.ReadOnlyField(source='car_listing.title')
+
+    class Meta:
+        model = Favorite
+        fields = ['id', 'car_listing', 'car_listing_title', 'created_at']
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -9,7 +17,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name', 'phone_number')
+        fields = (
+            'username',
+            'email',
+            'password',
+            'first_name',
+            'last_name',
+            'phone_number'
+        )
 
     def create(self, validated_data):
         user = User(
@@ -38,7 +53,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
             expiration=timezone.now() + timezone.timedelta(hours=48)
         )
 
-        send_verification_email_task.delay(user.id, verification.code, user.email)
+        send_verification_email_task.delay(
+            user.id, verification.code, user.email
+        )
 
 
 class EmailVerificationSerializer(serializers.Serializer):
@@ -56,7 +73,9 @@ class EmailVerificationSerializer(serializers.Serializer):
         return value
 
     def save(self, **kwargs):
-        verification = EmailVerification.objects.get(code=self.validated_data['code'])
+        verification = EmailVerification.objects.get(
+            code=self.validated_data['code']
+        )
         user = verification.user
         user.is_verified = True
         user.is_active = True
@@ -74,16 +93,22 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    favorites = FavoriteSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'is_verified']
+        fields = [
+            'username', 'email', 'first_name', 'last_name',
+            'phone_number', 'is_verified', 'favorites'
+        ]
         read_only_fields = ['email', 'is_verified']
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.phone_number = validated_data.get('phone_number',
+                                                   instance.phone_number)
         instance.save()
         return instance
 
